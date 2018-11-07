@@ -16,7 +16,8 @@ To get running with Wmibeat and also install the
 dependencies, run the following command:
 
 ```
-make setup
+go get 
+go build
 ```
 
 It will create a clean git history for each major step. Note that you can always rewrite the history if you wish before pushing your changes.
@@ -36,7 +37,7 @@ To build the binary for Wmibeat run the command below. This will generate a bina
 in the same directory with the name wmibeat.
 
 ```
-make
+go build
 ```
 
 
@@ -54,43 +55,14 @@ To run Wmibeat with debugging output enabled, run:
 To test Wmibeat, run the following command:
 
 ```
-make testsuite
+go test
 ```
 
-alternatively:
-```
-make unit-tests
-make system-tests
-make integration-tests
-make coverage-report
-```
-
-The test coverage is reported in the folder `./build/coverage/`
 
 ### Update
 
 Each beat has a template for the mapping in elasticsearch and a documentation for the fields
 which is automatically generated based on `fields.yml` by running the following command.
-
-```
-make update
-```
-
-
-### Cleanup
-
-To clean  Wmibeat source code, run the following commands:
-
-```
-make fmt
-make simplify
-```
-
-To clean up the build directory and generated artifacts, run:
-
-```
-make clean
-```
 
 
 ### Clone
@@ -110,8 +82,5 @@ For further development, check out the [beat developer guide](https://www.elasti
 
 The beat frameworks provides tools to crosscompile and package your beat for different platforms. This requires [docker](https://www.docker.com/) and vendoring as described above. To build packages of your beat, run the following command:
 
-```
-make release
-```
 
 This will fetch and create all images required for the build process. The whole process to finish can take several minutes.
