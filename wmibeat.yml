@@ -1,11 +1,7 @@
-################### Wmibeat Configuration Example #########################
-
-############################# Wmibeat ######################################
-
 wmibeat:
   # Defines how often an event is sent to the output
-  period: 1s
-  
+  period: 60s
+
   classes:
     - class: Win32_OperatingSystem
       fields:
@@ -39,11 +35,9 @@ wmibeat:
       - Name
       - Caption
       - installdate
-    - class: Win32_SoftwareFeature
-      fields:
-      - Name
-      - ProductName
-      - InstallDate
-      - Description
-      - Vendor
-      - Version   
+
+#----------------------------- Logstash output --------------------------------
+output.logstash:
+  # The Logstash hosts
+  #hosts: ["localhost:5044"]
+  hosts: ["172.30.1.48:5044"]  

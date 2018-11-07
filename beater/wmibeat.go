@@ -3,6 +3,8 @@ package beater
 import (
 	"fmt"
 	"time"
+	"strings"
+	"bytes"  
 
 	"github.com/elastic/beats/libbeat/beat"
 	"github.com/elastic/beats/libbeat/common"
@@ -51,11 +53,49 @@ func (bt *Wmibeat) Run(b *beat.Beat) error {
 		case <-ticker.C:
 		}
 
+    var allValues common.MapStr
+
+    for _, class := range bt.config.Classes {
+
+      var query bytes.Buffer
+
+      if len(class.Fields) > 0 {
+        wmiFields := class.Fields 
+        query.WriteString("SELECT ")
+        query.WriteString(strings.Join(wmiFields, ","))
+        query.WriteString(" FROM ")
+        query.WriteString(class.Class)
+        if class.WhereClause != "" {
+          query.WriteString(" WHERE ")
+          query.WriteString(class.WhereClause)
+        }
+      } else {
+        query.WriteString("SELECT ")
+        query.WriteString(" * ")
+        query.WriteString("FROM ")
+        query.WriteString(class.Class)
+        if class.WhereClause != "" {
+          query.WriteString(" WHERE ")
+          query.WriteString(class.WhereClause)
+        }
+      }
+
+      logp.Info("Query: "+query.String())
+      eachValues, err := WmiQuery(query.String(), class.Fields)
+      if err != nil {
+        logp.Warn("WmiQuery error:",err)
+        break
+      }
+
+      allValues = common.MapStrUnion(allValues, common.MapStr {class.Class: eachValues })
+    }
+
+
 		event := beat.Event{
 			Timestamp: time.Now(),
 			Fields: common.MapStr{
 				"type":    b.Info.Name,
-				"counter": counter,
+				"wmi":     allValues,
 			},
 		}
 		bt.client.Publish(event)
