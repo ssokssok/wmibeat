@@ -5,7 +5,7 @@ import (
 
 	"github.com/ssokssok/wmibeat/cmd"
 
-//	_ "github.com/ssokssok/wmibeat/include"
+	_ "github.com/ssokssok/wmibeat/include"
 )
 
 func main() {
