@@ -16,8 +16,7 @@ To get running with Wmibeat and also install the
 dependencies, run the following command:
 
 ```
-go get 
-go build
+make setup
 ```
 
 It will create a clean git history for each major step. Note that you can always rewrite the history if you wish before pushing your changes.
@@ -37,7 +36,7 @@ To build the binary for Wmibeat run the command below. This will generate a bina
 in the same directory with the name wmibeat.
 
 ```
-go build
+make
 ```
 
 
@@ -64,6 +63,9 @@ go test
 Each beat has a template for the mapping in elasticsearch and a documentation for the fields
 which is automatically generated based on `fields.yml` by running the following command.
 
+```
+make update
+```
 
 ### Clone
 
